@@ -1,0 +1,245 @@
+
+<h2 class="sr-only">Claude Certified Architect – Foundations study plan with 5-week schedule and progress tracker</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.plan { padding: 1.5rem 0; }
+.header { margin-bottom: 1.5rem; }
+.header h1 { font-size: 20px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.header p { font-size: 14px; color: var(--color-text-secondary); }
+.progress-bar-wrap { background: var(--color-background-secondary); border-radius: 99px; height: 8px; margin: 12px 0 4px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 99px; background: #1D9E75; transition: width 0.4s; }
+.progress-label { font-size: 13px; color: var(--color-text-secondary); }
+.week-grid { display: flex; flex-direction: column; gap: 12px; margin-top: 1.5rem; }
+.week-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); overflow: hidden; }
+.week-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; user-select: none; }
+.week-header:hover { background: var(--color-background-secondary); }
+.week-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.week-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.week-meta { font-size: 13px; color: var(--color-text-secondary); white-space: nowrap; }
+.chevron { font-size: 16px; color: var(--color-text-secondary); transition: transform 0.2s; }
+.week-body { display: none; border-top: 0.5px solid var(--color-border-tertiary); }
+.week-body.open { display: block; }
+.domain-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; margin-right: 4px; margin-bottom: 4px; font-weight: 500; }
+.tasks-list { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.task-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); cursor: pointer; transition: background 0.15s; }
+.task-item:hover { background: var(--color-background-secondary); }
+.task-item.done { background: var(--color-background-secondary); border-color: var(--color-border-tertiary); }
+.task-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--color-border-secondary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.task-item.done .task-check { background: #1D9E75; border-color: #1D9E75; }
+.task-check i { font-size: 12px; color: white; display: none; }
+.task-item.done .task-check i { display: block; }
+.task-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.5; flex: 1; }
+.task-item.done .task-text { color: var(--color-text-secondary); text-decoration: line-through; }
+.task-sub { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; display: block; }
+.task-item.done .task-sub { text-decoration: none; }
+.week-progress { padding: 0 16px 14px; }
+.section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-tertiary); padding: 12px 16px 6px; }
+.exam-tip { padding: 12px 16px; margin: 0 16px 16px; background: var(--color-background-info); border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-info); }
+.exam-tip p { font-size: 13px; color: var(--color-text-info); line-height: 1.5; }
+.exam-tip strong { font-weight: 500; }
+.reset-btn { margin-top: 1rem; font-size: 13px; color: var(--color-text-secondary); background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 6px 14px; cursor: pointer; }
+</style>
+
+<div class="plan">
+  <div class="header">
+    <h1>Claude Certified Architect – Foundations</h1>
+    <p>5-week study plan · Passing score: 720 · Multiple choice, scenario-based</p>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="global-bar" style="width: 0%"></div>
+    </div>
+    <div class="progress-label"><span id="global-pct">0%</span> complete · <span id="tasks-done">0</span> / <span id="tasks-total">0</span> tasks</div>
+  </div>
+
+  <div class="week-grid" id="week-grid"></div>
+  <button class="reset-btn" onclick="resetAll()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset progress</button>
+</div>
+
+<script>
+const weeks = [
+  {
+    id: "w1",
+    label: "Week 1",
+    color: "#185FA5",
+    bg: "#E6F1FB",
+    title: "Agentic Architecture & Orchestration",
+    domain: "Domain 1 — 27% of exam",
+    tip: "This is the highest-weight domain. Focus on the agentic loop control flow (stop_reason), how coordinator agents pass context to subagents, and why prompt-based enforcement fails for critical business logic. Sample questions 1, 7, 8, 9 are directly from this domain.",
+    tasks: [
+      { text: "Understand the agentic loop lifecycle", sub: "stop_reason: tool_use vs end_turn, tool result handling, loop termination anti-patterns" },
+      { text: "Study hub-and-spoke coordinator-subagent architecture", sub: "Subagents have isolated context — must be explicitly passed, not inherited" },
+      { text: "Learn the Task tool and allowedTools configuration", sub: "Task is the mechanism to spawn subagents; allowedTools must include 'Task'" },
+      { text: "Understand programmatic enforcement vs prompt-based guidance", sub: "Hooks/prerequisite gates for deterministic compliance; prompts alone have non-zero failure rate" },
+      { text: "Study Agent SDK hooks (PostToolUse, tool call interception)", sub: "Normalize heterogeneous data, block policy-violating actions, choose hooks over prompts for guarantees" },
+      { text: "Learn task decomposition patterns", sub: "Prompt chaining (sequential, predictable) vs dynamic adaptive decomposition (open-ended)" },
+      { text: "Study session management: --resume, fork_session, scratchpad files", sub: "Named sessions, forking for divergent approaches, when fresh session beats stale resume" },
+      { text: "Complete Exercise 4: Multi-Agent Research Pipeline", sub: "Build coordinator + 2 subagents, parallel Task calls, structured error propagation" },
+    ]
+  },
+  {
+    id: "w2",
+    label: "Week 2",
+    color: "#3B6D11",
+    bg: "#EAF3DE",
+    title: "Tool Design & MCP Integration",
+    domain: "Domain 2 — 18% of exam",
+    tip: "Tool descriptions are the primary mechanism LLMs use for tool selection — this is a key testable fact. Know the difference between project-scope (.mcp.json) and user-scope (~/.claude.json). Sample question 2 is a classic domain 2 question.",
+    tasks: [
+      { text: "Understand why tool descriptions determine tool selection reliability", sub: "Minimal descriptions → misrouting; include input formats, examples, edge cases, boundary explanations" },
+      { text: "Learn to differentiate and split similar tools", sub: "Rename overlapping tools, split generic tools into purpose-specific ones with defined I/O contracts" },
+      { text: "Study structured MCP error responses", sub: "isError flag, errorCategory (transient/validation/permission), isRetryable boolean" },
+      { text: "Understand error types and recovery strategies", sub: "Transient errors → local retry; propagate only unresolvable errors with partial results to coordinator" },
+      { text: "Learn tool distribution across agents (scoped access)", sub: "Too many tools degrades selection; give agents only role-relevant tools; verify_fact pattern for synthesis agent" },
+      { text: "Study tool_choice options", sub: "'auto', 'any', forced selection — know when to use each and why" },
+      { text: "Learn MCP server scoping and configuration", sub: ".mcp.json (project/shared) vs ~/.claude.json (personal); env var expansion for secrets" },
+      { text: "Understand MCP resources vs tools", sub: "Resources expose content catalogs (reduce exploratory calls); tools execute actions" },
+      { text: "Study built-in tools selection criteria", sub: "Grep (content search) vs Glob (file patterns) vs Read/Write/Edit — when Edit fails, use Read+Write" },
+    ]
+  },
+  {
+    id: "w3",
+    label: "Week 3",
+    color: "#854F0B",
+    bg: "#FAEEDA",
+    title: "Claude Code Configuration & Workflows",
+    domain: "Domain 3 — 20% of exam",
+    tip: "Very practical domain — expect questions about where to put files and why. The CLAUDE.md hierarchy and .claude/rules/ glob patterns are frequently tested. Sample questions 4, 5, 6, 10, 11, 12 all map here or to CI/CD workflows.",
+    tasks: [
+      { text: "Master the CLAUDE.md configuration hierarchy", sub: "User (~/.claude/CLAUDE.md) → Project (.claude/CLAUDE.md) → Directory; user-level NOT shared via version control" },
+      { text: "Learn @import syntax and .claude/rules/ organization", sub: "@import for modular standards; rules/ for topic-specific files (testing.md, api-conventions.md)" },
+      { text: "Understand path-specific rules with YAML frontmatter", sub: "paths: glob patterns load rules only when editing matching files; better than subdirectory CLAUDE.md for cross-codebase conventions" },
+      { text: "Learn custom slash commands and skills", sub: ".claude/commands/ (project-scoped, version-controlled) vs ~/.claude/commands/ (personal)" },
+      { text: "Understand skill frontmatter options", sub: "context: fork (isolate verbose output), allowed-tools (restrict access), argument-hint (prompt for params)" },
+      { text: "Master plan mode vs direct execution decision criteria", sub: "Plan mode: architectural decisions, 45+ files, multiple valid approaches. Direct: single-file, clear scope" },
+      { text: "Learn iterative refinement techniques", sub: "Input/output examples, test-driven iteration, interview pattern, sequential vs parallel issue fixes" },
+      { text: "Study Claude Code CI/CD integration", sub: "-p flag (non-interactive), --output-format json + --json-schema, session isolation for independent review" },
+      { text: "Complete Exercise 2: Configure Claude Code for team workflow", sub: "CLAUDE.md hierarchy, .claude/rules/ with globs, skills with context:fork, MCP server in .mcp.json" },
+    ]
+  },
+  {
+    id: "w4",
+    label: "Week 4",
+    color: "#533AB7",
+    bg: "#EEEDFE",
+    title: "Prompt Engineering & Structured Output",
+    domain: "Domain 4 — 20% of exam",
+    tip: "Key principle: explicit categorical criteria outperform vague confidence-based instructions ('be conservative'). Tool use with JSON schemas is the most reliable approach for structured output. Know when to use few-shot examples vs schema enforcement.",
+    tasks: [
+      { text: "Learn explicit criteria prompting to reduce false positives", sub: "Specific categorical criteria beat 'be conservative'; false positive categories undermine trust in accurate ones" },
+      { text: "Master few-shot prompting techniques", sub: "2-4 targeted examples for ambiguous scenarios; demonstrate format + reasoning; generalize to novel patterns" },
+      { text: "Understand tool_use with JSON schemas for structured output", sub: "Eliminates syntax errors; doesn't prevent semantic errors (values don't sum, wrong fields)" },
+      { text: "Know tool_choice configurations in depth", sub: "auto (may return text), any (must call a tool), forced {type: tool, name: ...} — and when each is appropriate" },
+      { text: "Learn schema design best practices", sub: "Optional/nullable fields prevent hallucination; enum + 'other' + detail for extensible categories" },
+      { text: "Study validation-retry loops", sub: "Append specific errors on retry; retries ineffective when info is simply absent from source" },
+      { text: "Understand Message Batches API tradeoffs", sub: "50% cost savings, up to 24h window, no latency SLA, no multi-turn tool calling — latency-tolerant workloads only" },
+      { text: "Learn multi-instance and multi-pass review architectures", sub: "Independent review instance beats self-review; per-file passes + integration pass avoids attention dilution" },
+      { text: "Complete Exercise 3: Structured Data Extraction Pipeline", sub: "JSON schema with nullable fields, validation-retry loop, few-shot examples, batch API with custom_id" },
+    ]
+  },
+  {
+    id: "w5",
+    label: "Week 5",
+    color: "#0F6E56",
+    bg: "#E1F5EE",
+    title: "Context Management & Reliability + Exam Prep",
+    domain: "Domain 5 — 15% of exam + full review",
+    tip: "Final week: complete all remaining exercises, study the 'lost in the middle' effect and progressive summarization risks, then do a full mock exam pass. Know all 6 scenarios cold — the exam picks 4 at random.",
+    tasks: [
+      { text: "Understand progressive summarization risks", sub: "Numbers, dates, percentages get lost; extract transactional facts into a persistent case-facts block" },
+      { text: "Learn the 'lost in the middle' effect and mitigation", sub: "Place key findings at the beginning of aggregated inputs; use explicit section headers" },
+      { text: "Study escalation patterns", sub: "Explicit criteria + few-shot examples; honor customer requests for human immediately; escalate on policy gaps" },
+      { text: "Master error propagation across multi-agent systems", sub: "Structured context (failure type, attempted query, partial results, alternatives); distinguish access failures from empty results" },
+      { text: "Learn context management for large codebases", sub: "Scratchpad files, subagent delegation for verbose output, /compact, crash recovery with manifests" },
+      { text: "Study human review workflows and confidence calibration", sub: "Stratified random sampling; field-level confidence scores; accuracy by document type before reducing review" },
+      { text: "Understand information provenance in multi-source synthesis", sub: "Claim-source mappings must survive synthesis; annotate conflicts rather than arbitrarily selecting one value" },
+      { text: "Complete Exercise 1: Multi-Tool Agent with Escalation Logic", sub: "3-4 MCP tools, agentic loop, structured errors, programmatic hook for business rule" },
+      { text: "Review all 12 sample questions and explanations", sub: "Understand why each wrong answer is wrong — distractors are the key to the exam" },
+      { text: "Study all 6 scenarios and their domain mappings", sub: "Exam picks 4 at random — know which domains each scenario tests" },
+      { text: "Review the In-Scope and Out-of-Scope topics list", sub: "Quick pass to confirm no gaps; note what is explicitly excluded" },
+      { text: "Complete the official practice exam", sub: "Review explanations for every question, especially ones you got right by guessing" },
+    ]
+  }
+];
+
+let state = {};
+try { state = JSON.parse(localStorage.getItem('claude_study') || '{}'); } catch(e) {}
+
+function saveState() {
+  try { localStorage.setItem('claude_study', JSON.stringify(state)); } catch(e) {}
+}
+
+function toggleTask(weekId, taskIdx) {
+  const key = weekId + '_' + taskIdx;
+  state[key] = !state[key];
+  saveState();
+  render();
+}
+
+function resetAll() {
+  if (confirm('Reset all progress?')) { state = {}; saveState(); render(); }
+}
+
+function render() {
+  let totalTasks = 0, doneTasks = 0;
+  weeks.forEach(w => { totalTasks += w.tasks.length; w.tasks.forEach((_, i) => { if (state[w.id + '_' + i]) doneTasks++; }); });
+
+  document.getElementById('global-bar').style.width = totalTasks ? Math.round(doneTasks/totalTasks*100) + '%' : '0%';
+  document.getElementById('global-pct').textContent = totalTasks ? Math.round(doneTasks/totalTasks*100) + '%' : '0%';
+  document.getElementById('tasks-done').textContent = doneTasks;
+  document.getElementById('tasks-total').textContent = totalTasks;
+
+  const grid = document.getElementById('week-grid');
+  grid.innerHTML = '';
+
+  weeks.forEach((w, wi) => {
+    const wDone = w.tasks.filter((_, i) => state[w.id + '_' + i]).length;
+    const wTotal = w.tasks.length;
+    const wPct = Math.round(wDone / wTotal * 100);
+    const isOpen = state[w.id + '_open'] !== false && (wi === 0 || state[w.id + '_open']);
+
+    const card = document.createElement('div');
+    card.className = 'week-card';
+
+    const taskItems = w.tasks.map((t, i) => {
+      const done = state[w.id + '_' + i];
+      return `<div class="task-item${done ? ' done' : ''}" onclick="toggleTask('${w.id}', ${i})">
+        <div class="task-check"><i class="ti ti-check" aria-hidden="true"></i></div>
+        <div>
+          <div class="task-text">${t.text}</div>
+          ${t.sub ? `<span class="task-sub">${t.sub}</span>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="week-header" onclick="toggleWeek('${w.id}')">
+        <span class="week-badge" style="background:${w.bg}; color:${w.color};">${w.label}</span>
+        <span class="week-title">${w.title}</span>
+        <span class="week-meta">${wDone}/${wTotal}</span>
+        <i class="ti ti-chevron-down chevron" style="${isOpen ? 'transform:rotate(180deg)' : ''}" id="chev-${w.id}" aria-hidden="true"></i>
+      </div>
+      <div class="week-body${isOpen ? ' open' : ''}" id="body-${w.id}">
+        <div class="week-progress">
+          <div style="font-size:12px; color:var(--color-text-secondary); margin-bottom:4px;">${w.domain} · ${wPct}% done</div>
+          <div class="progress-bar-wrap" style="height:6px;">
+            <div class="progress-bar" style="width:${wPct}%; background:${w.color};"></div>
+          </div>
+        </div>
+        <div class="exam-tip"><p><strong>Exam focus:</strong> ${w.tip}</p></div>
+        <div class="section-label">Study tasks</div>
+        <div class="tasks-list">${taskItems}</div>
+      </div>`;
+
+    grid.appendChild(card);
+  });
+}
+
+function toggleWeek(weekId) {
+  state[weekId + '_open'] = !document.getElementById('body-' + weekId).classList.contains('open');
+  saveState();
+  render();
+}
+
+render();
+</script>
