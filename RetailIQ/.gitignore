@@ -1,0 +1,36 @@
+# Local portable dev tools (Node.js, Git) - not part of the project
+/tools/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.db
+*.sqlite3
+
+# Node / frontend
+node_modules/
+dist/
+frontend/.vite/
+
+# Environment secrets
+.env
+backend/.env
+
+# Data: the sample dataset CSVs ARE committed (small, ~10MB total) so the
+# repo is immediately usable without regenerating - see scripts/generate_data.py
+# and scripts/clean_data.py to regenerate with a fresh random seed.
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Alembic
+backend/alembic/versions/__pycache__/
